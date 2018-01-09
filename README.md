@@ -12,7 +12,7 @@ Como instalar
 -------------
 
 ```console
-$ pip install bbscraper
+$ pip install python-bbscraper
 ```
 
 Motivação
