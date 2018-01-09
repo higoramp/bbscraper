@@ -51,6 +51,6 @@ def main():
     print()
 
     if args.saldo:
-        print(f'Saldo: R${bb.saldo()}')
+        print('Saldo: R${0}'.format(bb.saldo()))
     if args.extrato:
         print(output(bb.extrato()))

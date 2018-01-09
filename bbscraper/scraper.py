@@ -30,7 +30,7 @@ class BancodoBrasilScraper:
 
         self.id_dispositivo = '000000000000000'
         self.ida = '00000000000000000000000000000000'
-        self.nick = f'NICKRANDOM.{randint(1000, 99999)}'
+        self.nick = 'NICKRANDOM.{0}'.format(randint(1000, 99999))
         
         self.idh = ''
         self.mci = ''
@@ -104,6 +104,9 @@ class BancodoBrasilScraper:
 
         json_response = response.json()
 
+        print("Resposta: ")
+        print (json_response)
+
         sessoes = json_response['conteiner']['telas'][0]['sessoes']
 
         transacoes = []
@@ -117,10 +120,12 @@ class BancodoBrasilScraper:
                             if len(tt['componentes']) == 3 and tt['componentes'][0]['componentes'][0]['texto'] != 'Dia':
                                 description = tt['componentes'][1]['componentes'][0]['texto']
                                 date = self.parse_date(tt['componentes'][0]['componentes'][0]['texto'], month[0], month[2]).date()
-                                value = Decimal(tt['componentes'][2]['componentes'][0]['texto'].split()[0].replace('.', '').replace(',', '.'))
-                                sign = '-' if tt['componentes'][2]['componentes'][0]['texto'].split()[-1] == 'D' else '+'
+                                value = tt['componentes'][2]['componentes'][0]['texto'].split()[0].replace('.', '').replace(',', '')
+                                sign = -1 if tt['componentes'][2]['componentes'][0]['texto'].split()[-1] == 'D' else 1
+                                value = sign * int(value)
                                 raw = tt['componentes']
-                                transacoes.append({'description': description, 'date': date, 'value': value}) # , 'sign': sign, 'raw': raw
+                                if not description == 'Saldo Anterior' and not description =='S A L D O':
+                                    transacoes.append({'description': description, 'date': date, 'value': value}) # , 'sign': sign, 'raw': raw
                             else:
                                 continue
                 elif s['cabecalho'].startswith('Informa') and s['cabecalho'].endswith('es adicionais'):
@@ -152,4 +157,4 @@ class BancodoBrasilScraper:
         return datetime.strptime('{}/{}/{}'.format(day, m2n[month], year), '%d/%m/%Y')
     
     def __str__(self):
-        return f"<Agencia: {self.agencia}, Conta: {self.conta}>"
+        return "<Agencia: {0}, Conta: {1}>".format(self.agencia, self.conta)
