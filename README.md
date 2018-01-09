@@ -1,3 +1,8 @@
+Fork do projeto do [anderson89marques(https://github.com/anderson89marques/bbscraper)
+- Pequena modificação para suportar as versões do python anteriores ao 3.6
+- Removendo da lista de transações as linhas de informação do saldo anterior e saldo.
+- Troquei o valor da transação para um inteiro sem virgula e coloquei o sinal para diferenciar Crédito e Débito
+---------
 Banco do Brasil Scraper
 ============
 
